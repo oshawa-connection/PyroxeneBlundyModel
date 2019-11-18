@@ -9,22 +9,22 @@ app.use("/views",express.static(__dirname +"/../views/"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-let allowedOrigins = ["http://localhost:8080","https://james-fleming.herokuapp.com/"]
+// let allowedOrigins = ["http://localhost:8080","https://james-fleming.herokuapp.com/"]
 
-app.use(cors({
-  origin: function(origin, callback) {
-    // allow requests with no origin
-    // (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      console.log(origin)
-      var msg = 'The CORS policy for this site does not ' +
-        'allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  }
-}));
+// app.use(cors({
+//   origin: function(origin, callback) {
+//     // allow requests with no origin
+//     // (like mobile apps or curl requests)
+//     if (!origin) return callback(null, true);
+//     if (allowedOrigins.indexOf(origin) === -1) {
+//       console.log(origin)
+//       var msg = 'The CORS policy for this site does not ' +
+//         'allow access from the specified Origin.';
+//       return callback(new Error(msg), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 // allow access from client app
 app.use(function(req, res, next) {
@@ -60,7 +60,7 @@ app.get( "/submitjob", ( req :Request, res : Response ) => {
 app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
     var arg1 = req.body['ionList']
     var arg2 = req.body['partitionCoefficients']
-    const pythonProcess = spawn('python3',["../childProcessCode/cpxFittingCalculator.py", arg1, arg2]);
+    const pythonProcess = spawn('python3',[__dirname + "/../childProcessCode/cpxFittingCalculator.py", arg1, arg2]);
 
     pythonProcess.stdout.on('data', (data : any) => {
         console.log(data.toString())
