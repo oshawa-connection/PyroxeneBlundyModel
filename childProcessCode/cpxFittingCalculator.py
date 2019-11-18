@@ -10,13 +10,7 @@ import sys
 #
 ionsNamesInput = list((sys.argv[1].split(",")))
 partitionCoefficientsInput = np.array((sys.argv[2].split(","))).astype(np.float)
-
-
-##    check that they are the same length
-#except IndexError:
-#ionsNamesInput = ["Lu","Yb","Er", "Y", "Dy","Tb"	,"Gd",	"Eu", "Sm",	"Nd",	"Pr",	"Ce",	"La"]
-#partitionCoefficientsInput = [0.820255866	,0.818727698,	0.884169946,	0.891499641,	0.894813905,	0.868754382	,0.823718945	,0.628083738	,0.658927043,	0.435905699,	0.333214165,	0.234228321,	0.155300619]
-
+temperature = np.float(sys.argv[3]) + 273.15
 
 ionDf = pd.DataFrame ( {'ion': ['La',
 'Ce',
@@ -52,7 +46,7 @@ final = pd.merge(ionDf, inputDf, how='inner', left_on="ion", right_on="ion")
 final.sort_values(by= "radii",inplace=True)
 
 def blundy_func(r_i,D_o,E,r_o):
-    inner =  ((-4 * np.pi * E * 6.0221409*10**(23) * (r_o/2) * (r_i   - r_o )**2 + 1/3 * (r_i - r_o)**3))  / (8.314*1448)
+    inner =  ((-4 * np.pi * E * 6.0221409*10**(23) * (r_o/2) * (r_i   - r_o )**2 + 1/3 * (r_i - r_o)**3))  / (8.314*temperature)
     #print('inner array')
     #print (inner)
     return D_o * np.exp(inner)

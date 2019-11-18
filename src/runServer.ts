@@ -9,12 +9,11 @@ app.use("/views",express.static(__dirname +"/../views/"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// let allowedOrigins = ["http://localhost:8080","https://james-fleming.herokuapp.com/"]
+let allowedOrigins = ["http://localhost:8080","https://james-fleming.herokuapp.com/"]
 
 // app.use(cors({
 //   origin: function(origin, callback) {
 //     // allow requests with no origin
-//     // (like mobile apps or curl requests)
 //     if (!origin) return callback(null, true);
 //     if (allowedOrigins.indexOf(origin) === -1) {
 //       console.log(origin)
@@ -34,9 +33,6 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS,   PUT, PATCH, DELETE');
   // Request headers you wish to allow
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  // Only uncomment the next line if you find the idea of chopping your own ball
-  // s off fun
-  // res.setHeader('Content-Type', 'text/plain');
   // Set to true if you need the website to include cookies in the   requests sent
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', false);
@@ -60,11 +56,13 @@ app.get( "/submitjob", ( req :Request, res : Response ) => {
 app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
     var arg1 = req.body['ionList']
     var arg2 = req.body['partitionCoefficients']
-    const pythonProcess = spawn('python3',[__dirname + "/../childProcessCode/cpxFittingCalculator.py", arg1, arg2]);
+    var temperature = req.body['temperature']
+    const pythonProcess = spawn('python3',[__dirname + "/../childProcessCode/cpxFittingCalculator.py", arg1, arg2, temperature]);
 
     pythonProcess.stdout.on('data', (data : any) => {
-        console.log(data.toString())
+        
         try {
+            console.log(data.toString())
             var resultString = data.toString().replace(/'/g, '"')
             
             console.log(resultString)
@@ -73,7 +71,7 @@ app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
         } catch(err) {
             console.log(err)
             res.render(__dirname + '/../views/error.ejs',{
-                errorMesssage: "ERROR: its on fire yo"
+                errorMesssage: "A server error occurred during the parsing of results."
             })
         }
         
@@ -82,15 +80,18 @@ app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
 
     pythonProcess.stderr.on('data', (data :any) => {
         console.log("Python error occured")
+        var errorMessage : string
         try {
             console.log(`stderr: ${data.toString()}`);
+            errorMessage = data.toString();
         }
         catch(err) {
             console.log(err)
+            errorMessage = "During the handling of this error, a JS error occurred..."
         }
         
         res.render(__dirname + '/../views/error.ejs',{
-            errorMesssage: "Python error occurred. Check inputs and try again."
+            errorMesssage: errorMessage
         })
     });
 })

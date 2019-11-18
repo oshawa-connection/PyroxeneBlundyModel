@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
     <body>
+        <div>
+            Enter data. For now, each value must be seperated by a comma, without a comma at the end of the list.
+            <br>
+            For example, La, Er, Eu is ok but La, Er, Eu, is not ok because of the comma at the end.
+            <br>
+            Note that if there is an Eu anomaly, it might be best to remove it for the purposes of fitting.
+            <br>
+        </div>
         <form action="/pyroxeneFitting" method="POST">
-            <label for='ionList'>Give a list of the chemical formula of the ions, each seperated by a comma, no spaces!</label>
+            <label for='ionList'>Give a list of the chemical formula of the ions, each seperated by a comma</label>
             <input type="text" name="ionList" placeholder="La,Yb,Y,Lu,Ce">
+
             <br>
             <label for='ionList'>Give a list of the cpx/ melt partition coefficients, each seperated by a comma.</label>
-            <input type="text" placeholder="0.2,0.01,0.01,0.85" name="partitionCoefficients">
+            <input type="text" placeholder="e.g. 0.2,0.01,0.01,0.85" name="partitionCoefficients">
             <br>
-            <button type="submit">Submit</button>
+
+            <label for='temperature'>Temperature of the experiement in CELCIUS. The script will convert to kelvin.</label>
+            <input type="number" placeholder="e.g. 1185" name="temperature">
+            <br>
+            <button type="submit">Submit data and run model.</button>
         </form>
     </body>
 </html>
