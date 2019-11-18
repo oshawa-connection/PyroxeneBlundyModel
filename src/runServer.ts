@@ -64,12 +64,18 @@ app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
 
     pythonProcess.stdout.on('data', (data : any) => {
         console.log(data.toString())
-        
-        var resultString = data.toString().replace(/'/g, '"')
-        
-        console.log(resultString)
-        var results = JSON.parse(resultString)
-        res.json(results).send()
+        try {
+            var resultString = data.toString().replace(/'/g, '"')
+            
+            console.log(resultString)
+            var results = JSON.parse(resultString)
+            res.json(results).send()
+        } catch(err) {
+            console.log(err)
+            res.render(__dirname + '/../views/error.ejs',{
+                errorMesssage: "ERROR: its on fire yo"
+            })
+        }
         
         // Do something with the data returned from python script
     })
