@@ -81,10 +81,16 @@ app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
     })
 
     pythonProcess.stderr.on('data', (data :any) => {
-        console.log("Python error:")
-        console.log(`stderr: ${data.toString()}`);
+        console.log("Python error occured")
+        try {
+            console.log(`stderr: ${data.toString()}`);
+        }
+        catch(err) {
+            console.log(err)
+        }
+        
         res.render(__dirname + '/../views/error.ejs',{
-            errorMesssage: data.toString()
+            errorMesssage: "Python error occurred. Check inputs and try again."
         })
     });
 })
