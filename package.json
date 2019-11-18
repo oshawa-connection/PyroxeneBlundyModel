@@ -4,9 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./dist/runServer.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./dist/runServer.js",
+    "build":"tsc --build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startDev":"nodemon ./dist/runServer.js"
   },
+  "engines": {
+    "node": "10.15.3",
+    "npm": "6.4.1"
+  },
+  "private": true,
   "author": "",
   "license": "ISC",
   "dependencies": {

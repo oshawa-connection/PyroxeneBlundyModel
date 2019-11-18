@@ -1,6 +1,5 @@
 const express = require( "express" );
 const app = express();
-const port = 8080; // default port to listen
 import { Request, Response, NextFunction } from 'express';
 const spawn = require("child_process").spawn;
 var cors = require('cors');
@@ -10,7 +9,7 @@ app.use("/views",express.static(__dirname +"/../views/"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-let allowedOrigins = ["http://localhost:8080"]
+let allowedOrigins = ["http://localhost:8080","https://james-fleming.herokuapp.com/"]
 
 app.use(cors({
   origin: function(origin, callback) {
@@ -96,11 +95,11 @@ app.post("/test123", (req:Request,res:Response)=> {
 
 app.get('*', function(req, res){
     res.status(404);
-    res.send("sorry missed")
-    // res.render(__dirname + '/../../views/404.ejs');
+    // res.send("sorry missed")
+    res.render(__dirname + '/../../views/404.ejs');
   });
 
-
+const port = process.env.PORT || 8080;
 // start the Express app
 app.listen( port, () => {
     console.log( `server started at http://localhost:${ port }` );
