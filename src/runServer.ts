@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 let allowedOrigins = ["http://localhost:8080","https://james-fleming.herokuapp.com/"]
 
 // app.use(cors({
-//   origin: function(origin, callback) {
+//   origin: (origin, callback) => {
 //     // allow requests with no origin
 //     if (!origin) return callback(null, true);
 //     if (allowedOrigins.indexOf(origin) === -1) {
@@ -67,7 +67,7 @@ app.post("/pyroxeneFitting", (req:Request,res:Response)=> {
             
             console.log(resultString)
             var results = JSON.parse(resultString)
-            res.json(results).send()
+            res.json(results)
         } catch(err) {
             console.log(err)
             res.render(__dirname + '/../views/error.ejs',{

@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
 from scipy.optimize import curve_fit
 import pandas as pd
 import sys
 
-#try:
-#
 ionsNamesInput = list((sys.argv[1].split(",")))
 partitionCoefficientsInput = np.array((sys.argv[2].split(","))).astype(np.float)
 temperature = np.float(sys.argv[3]) + 273.15
@@ -71,10 +68,6 @@ ss_res = np.sum(residuals**2)
 ss_tot = np.sum((np.array(final["DCpxLiquid"])-np.mean(np.array(final["DCpxLiquid"])))**2)
 r_squared = 1 - (ss_res / ss_tot)
 
-resultsDict = {"Do":popt[0],"E":popt[1],"Ro":popt[2],"R Squared":r_squared}
+results = {"Do":popt[0],"E":popt[1],"Ro":popt[2],"R Squared":r_squared}
 
-
-print (resultsDict)
-
-
-
+print (results)
